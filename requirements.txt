@@ -1,0 +1,9 @@
+# Versions used for the paper (Python 3.9.19); the same pins as pyproject.toml / uv.lock, for installation with pip
+numpy==2.0.2
+scipy==1.13.1
+pandas==2.3.3
+scikit-learn==1.4.2
+matplotlib==3.9.4
+torch==2.4.1
+# optional: learning curves with --wandb
+# wandb

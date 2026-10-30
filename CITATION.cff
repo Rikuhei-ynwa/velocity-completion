@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper."
+title: "Velocity Completion Task and Method for Event-based Player Positional Data in Soccer"
+authors:
+  - family-names: Umemoto
+    given-names: Rikuhei
+  - family-names: Fujii
+    given-names: Keisuke
+license: MIT

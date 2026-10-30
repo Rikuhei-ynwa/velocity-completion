@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+# data, trained runs and analysis outputs are never part of the repository
+data/
+results/
+analysis/results/
+repro_out/
+*.npz
+*.npy
+*.pkl
+*.p
+*.pth
+wandb/
+.venv/

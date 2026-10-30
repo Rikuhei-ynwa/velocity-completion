@@ -1,0 +1,28 @@
+[project]
+name = "velocity-completion"
+version = "1.0.0"
+description = "Velocity completion for event-based player positional data in soccer"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Rikuhei Umemoto" },
+    { name = "Keisuke Fujii" },
+]
+# the paper used Python 3.9.19 and the versions below
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    "numpy==2.0.2",
+    "scipy==1.13.1",
+    "pandas==2.3.3",
+    "scikit-learn==1.4.2",
+    "matplotlib==3.9.4",
+    "torch==2.4.1",
+]
+
+[project.optional-dependencies]
+# learning curves with main_completion.py --wandb
+wandb = ["wandb>=0.17"]
+
+[tool.uv]
+# a collection of scripts, not an installable package
+package = false
