@@ -3,7 +3,7 @@
 # batch size 256, Adam with learning rate 1e-4, at most 5000 epochs, early stopping after 20 epochs without a new best
 # validation RMSE, model.train() for training and model.eval() for validation and test (--bn_eval).
 #
-#   uv run scripts/train_and_test.sh --model Transformer_add_resid_eq2 --dataset anonymized_aligned --date 202610091700 --seeds "0 1 2 3 4"
+#   uv run scripts/train_and_test.sh --model Transformer_add_resid_eq2 --dataset anonymized_aligned --date 202611100000 --seeds "0 1 2 3 4"
 #
 # Options:
 #   --model NAME      model name (main_completion.py; e.g. Transformer_add_resid_eq2, GNN_add_resid_eq2, TGAT_resid_eq2)

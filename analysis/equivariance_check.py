@@ -21,6 +21,8 @@ For the Transformer family the learned slot embedding (SpatialEncoding) is a sec
 
 import argparse, json, os, pickle, sys
 
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")  # the check runs on the CPU: the model would otherwise move to a visible GPU, the inputs not
+
 import numpy as np
 import torch
 from torch.utils.data import DataLoader

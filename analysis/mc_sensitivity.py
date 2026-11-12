@@ -59,9 +59,9 @@ def main():
     cli.add_argument("--n_jobs", type=int, default=8)
     cli.add_argument("--n_sample", type=int, default=10)  # main_completion.py default
     cli.add_argument("--data_path", default=os.environ.get("VC_DATA_ROOT", "data"))
-    cli.add_argument("--dataset", default="source",
-                     help="the paper used the data set with the original slot order; PPCF/OBSO do not depend on the slot "
-                          "order, but the order in which the noise is drawn does")
+    cli.add_argument("--dataset", default="anonymized",
+                     help="the paper used the anonymized data set like every other experiment; PPCF/OBSO do not depend on the "
+                          "slot order, but the order in which the noise is drawn does")
     cli.add_argument("--out", type=str, default="repro_out")
     cli.add_argument("--limit_levels", type=int, default=None)  # for quick timing tests
     cli.add_argument("--start_method", default=None, choices=[None, "fork", "spawn", "forkserver"],

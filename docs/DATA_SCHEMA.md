@@ -33,7 +33,7 @@ N = number of samples, T = 10 (recurrent only; the arrays of `non_recurrent` hav
 | Key | Shape | Content |
 |---|---|---|
 | `cies` | (N, T, 69, 2) float64 | rows 0–23: positions of ball start, ball end, Home 1–11, Away 1–11, divided by (52.5, 34); rows 24–46: velocities of the ball and the 22 players, standardised with `vel_stats`; rows 47–68: velocities of the rule-based baseline [m/s] (`preprocess_data/rule_based_velocity.py`), not scaled |
-| `vel_stats` | (2, 4) | mean_x, std_x, mean_y, std_y of the ball (row 0) and of all players (row 1) velocities of this split |
+| `vel_stats` | (2, 4) | mean_x, std_x, mean_y, std_y of the ball (row 0) and of all players (row 1) velocities of the **training** split; the same array in every split. The velocities of the validation and test splits are standardised and converted back to m/s with these training statistics, never with their own (those would contain their targets) |
 | `node_type` | (N, T, 23, 5) | per agent (ball, 22 players): is ball, is player, attack direction, on the ball, goalkeeper |
 | `edge_type` | (N, T, 506, 2) | per directed edge of the complete graph on 23 agents: same team, ball–actor relation |
 | `eventtypes` | (N, T, 18) | one-hot event type (order of `event_config.EVENT_TYPE`) |

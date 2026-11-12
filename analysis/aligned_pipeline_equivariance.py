@@ -1,9 +1,11 @@
 """Equivariance of the whole pipeline "relabel every event independently -> align the window by position (preprocess_data/
 align_windows.py) -> trained model" (the symmetry of the anonymized data). The model is the trained best model on aligned windows.
 
-    python analysis/aligned_pipeline_equivariance.py --run <results_root>/weights/vel_1_acc_0_norm/202610091700/Transformer_add_resid_eq2_events_0_rectangular_256
+    python analysis/aligned_pipeline_equivariance.py --run <results_root>/weights/vel_1_acc_0_norm/202611100000/Transformer_add_resid_eq2_events_0_rectangular_256
 """
 import argparse, json, os, pickle, sys
+
+os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")  # the check runs on the CPU: the model would otherwise move to a visible GPU, the inputs not
 
 import numpy as np
 import torch

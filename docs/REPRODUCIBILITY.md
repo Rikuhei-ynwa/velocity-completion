@@ -6,7 +6,7 @@ reported values by itself. With data in the format of [DATA_SCHEMA.md](DATA_SCHE
 same computations; with the synthetic data of `examples/` they check that every step runs (`tests/smoke_test.sh`).
 
 All commands are run from the repository root in the environment created by `uv sync` (prefix them with `uv run`, or
-activate `.venv` first), with `VC_DATA_ROOT` (data sets) and `VC_RESULTS_ROOT` (trained runs) set. `--date` is an integer label of an experiment (the paper used the start time, e.g. 202610091700); the run directory of a model is
+activate `.venv` first), with `VC_DATA_ROOT` (data sets) and `VC_RESULTS_ROOT` (trained runs) set. `--date` is an integer label of an experiment (the paper used the start time, e.g. 202611100000); the run directory of a model is
 `$VC_RESULTS_ROOT/weights/vel_1_acc_0_norm/<date>/<model>_events_<seed>_rectangular_256/`, and the test predictions
 are in `experiments/sample_eval/samples.p` of that directory. The labels that appear in the help texts of the analysis
 scripts are those of the paper's runs.
@@ -20,6 +20,9 @@ python preprocess_data/make_assoc_features.py --dataset anonymized
 python preprocess_data/make_assoc_nonrecurrent.py --dataset anonymized
 python preprocess_data/align_windows.py --dataset anonymized                     # -> anonymized_aligned
 ```
+
+Every split must be standardised with the velocity statistics of the training split (`vel_stats` in
+[DATA_SCHEMA.md](DATA_SCHEMA.md)); the validation and test predictions are converted back to m/s with the same statistics.
 
 ## 2. Training and testing
 
@@ -52,7 +55,7 @@ python analysis/sklearn_resid_eq2_event.py --date 3 --models RF SVM --variants r
 | Errors by tactical situation | any | `analysis/scenario_metrics.py` |
 | Direction-only and speed-only counterfactuals | proposed | `analysis/direction_speed_decomposition.py` |
 | High-speed weighted loss / oversampling | proposed with `--hs-alpha 2/5/10` or `--hs-oversample K` | `scripts/train_and_test.sh`, `analysis/speed_metrics.py` |
-| Monte Carlo sensitivity of PPCF / OBSO to velocity noise | none | `analysis/mc_sensitivity.py --dataset source` |
+| Monte Carlo sensitivity of PPCF / OBSO to velocity noise | none | `analysis/mc_sensitivity.py --dataset anonymized` |
 | Sensitivity to direction errors | none | `analysis/angular_sensitivity.py` |
 | Parameters, latency, throughput | any | `analysis/model_cost.py`; on an otherwise idle GPU `analysis/time_benchmark.py`; alignment cost `analysis/alignment_time.py` |
 | Accuracy of the window alignment | none | `analysis/alignment_accuracy.py` |

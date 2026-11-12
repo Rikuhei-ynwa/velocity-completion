@@ -15,7 +15,7 @@ RF: n_estimators chosen from {50, 100} on the validation events, seeds 0-4 = ran
 C chosen from {0.1, 1, 10} on the validation events; deterministic, so the 5 seeds are identical (as for the original SVM). The features of
 the SVM are standardised. Written like analysis/sklearn_samples.py to <weights>/<date>/<RF|SVM>_<variant>_events_<seed>_rectangular_256.
 
-    python analysis/sklearn_resid_eq2_event.py --date 202610091000 --models RF SVM --variants resid resid_eq2
+    python analysis/sklearn_resid_eq2_event.py --date 202611100004 --models RF SVM --variants resid resid_eq2
 """
 import argparse, os, pickle, sys, time
 

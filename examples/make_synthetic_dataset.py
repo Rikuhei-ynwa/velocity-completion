@@ -156,20 +156,25 @@ def edge_types(onballs):
     return et
 
 
-def model_inputs(data):
-    """{match: samples} -> the arrays of <split>.npz."""
+def velocity_stats(data):
+    """mean_x, std_x, mean_y, std_y of the ball (row 0) and of all players (row 1) velocities of {match: samples}."""
+    vels = np.concatenate([data[g]["vels"] for g in data]).astype(float)
+    return np.array([[v[..., 0].mean(), v[..., 0].std(), v[..., 1].mean(), v[..., 1].std()]
+                     for v in (vels[..., 0:1, :], vels[..., 1:, :])])
+
+
+def model_inputs(data, stats):
+    """{match: samples} -> the arrays of <split>.npz; the velocities are standardised with `stats`, the statistics of the
+    training split, for every split (statistics of the validation or test split would leak their targets)."""
     cat = lambda k: np.concatenate([data[g][k] for g in data])
     locs, vels, fakes = cat("locs").astype(float), cat("vels").astype(float), cat("vel_fakes").astype(float)
     locs[..., 0] /= L2
     locs[..., 1] /= W2
-    stats = []
-    for sl in (np.s_[..., 0:1, :], np.s_[..., 1:, :]):  # ball, players
+    for sl, m in zip((np.s_[..., 0:1, :], np.s_[..., 1:, :]), stats):  # ball, players
         v = vels[sl]
-        m = [v[..., 0].mean(), v[..., 0].std(), v[..., 1].mean(), v[..., 1].std()]
         v[..., 0] = (v[..., 0] - m[0]) / m[1]
         v[..., 1] = (v[..., 1] - m[2]) / m[3]
         vels[sl] = v
-        stats.append(m)
     direcs, onballs, gks = cat("direcs")[..., 0], cat("onballs")[..., 0], cat("gks")[..., 0]
     lead = direcs.shape[:-1]
     node = np.zeros(lead + (N_AGENTS, 5))
@@ -178,7 +183,7 @@ def model_inputs(data):
     node[..., 1:, 2], node[..., 1:, 3], node[..., 1:, 4] = direcs, onballs, gks
     types = cat("types")[..., 0]
     onehot = (types[..., None] == np.array(cfg.EVENT_TYPE, dtype=object)).astype(float)
-    return {"cies": np.concatenate([locs, vels, fakes], axis=-2), "vel_stats": np.array(stats), "node_type": node,
+    return {"cies": np.concatenate([locs, vels, fakes], axis=-2), "vel_stats": np.asarray(stats), "node_type": node,
             "edge_type": edge_types(onballs), "eventtypes": onehot, "frames": cat("frames")}
 
 
@@ -196,6 +201,7 @@ def main():
         sys.exit(f"{root} already exists; refusing to overwrite")
     rng = np.random.default_rng(opt.seed)
     bounds = np.cumsum([0] + opt.n_matches)
+    train_stats = {}  # datatype -> velocity statistics of the training split, used for every split
     for s, split in enumerate(("training", "validation", "test")):
         rec, nrec = {}, {}
         for m in range(bounds[s], bounds[s + 1]):
@@ -204,8 +210,10 @@ def main():
             d = os.path.join(root, datatype)
             os.makedirs(d, exist_ok=True)
             pickle.dump(data, open(os.path.join(d, f"{split}.pkl"), "wb"), protocol=4)
-            np.savez(os.path.join(d, f"{split}.npz"), **model_inputs(data))
-        print(f"{split}: {bounds[s + 1] - bounds[s]} synthetic matches, {len(model_inputs(nrec)['frames'])} target events")
+            if split == "training":
+                train_stats[datatype] = velocity_stats(data)
+            np.savez(os.path.join(d, f"{split}.npz"), **model_inputs(data, train_stats[datatype]))
+        print(f"{split}: {bounds[s + 1] - bounds[s]} synthetic matches, {sum(len(nrec[g]['frames']) for g in nrec)} target events")
     print(f"-> {root}")
 
 

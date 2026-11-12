@@ -14,9 +14,9 @@ import numpy as np
 
 cli = argparse.ArgumentParser()
 cli.add_argument("--model", default="Transformer_add_resid_eq2")
-cli.add_argument("--date", default="202610091700")
+cli.add_argument("--date", default="202611100000")
 cli.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2, 3, 4])
-cli.add_argument("--model_per_event", default="analysis/results/per_event_best_aligned_202610091700.npz")
+cli.add_argument("--model_per_event", default="analysis/results/per_event_best_aligned_202611100000.npz")
 cli.add_argument("--baseline_per_event", default="analysis/results/interp_baseline_best_aligned_per_event.npz")
 cli.add_argument("--weights_dir", default=os.path.join(os.environ.get("VC_RESULTS_ROOT", "results"), "weights", "vel_1_acc_0_norm"))
 cli.add_argument("--sample_dir", default="sample_eval")

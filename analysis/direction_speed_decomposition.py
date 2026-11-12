@@ -10,7 +10,7 @@ The direction of a velocity below --v_min m/s is not defined: where the true or 
 direction-only set uses the true velocity and the speed-only set keeps the predicted speed along the true direction (if the
 true speed is below the threshold, the predicted velocity is kept).
 
-    python analysis/direction_speed_decomposition.py --date 202610091700 --model Transformer_add_resid_eq2
+    python analysis/direction_speed_decomposition.py --date 202611100000 --model Transformer_add_resid_eq2
 """
 import argparse, json, os, pickle, sys
 
